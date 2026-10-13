@@ -22,7 +22,12 @@ steps:
   - uses: gradle/actions/setup-gradle@v4
     with:
       gradle-version: '8.9'
-
+- name: Extract project ZIP
+    run: |
+      ZIP=$(find . -maxdepth 1 -name '*.zip' | head -n 1)
+      if [ -z "$ZIP" ]; then echo "Project ZIP not found"; exit 1; fi
+      unzip -o "$ZIP" -d extracted
+      find extracted -name '*.zip' -delete
   - name: Build APK
     run: gradle assembleDebug
 
